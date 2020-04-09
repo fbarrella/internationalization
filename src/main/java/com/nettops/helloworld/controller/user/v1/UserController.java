@@ -2,12 +2,16 @@ package com.nettops.helloworld.controller.user.v1;
 
 import com.nettops.helloworld.model.user.User;
 import com.nettops.helloworld.service.user.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping("/user/v1")
 public class UserController {
@@ -21,8 +25,8 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public User findById(@PathVariable Long id) throws Exception {
-        User user = service.findById(id);
+    public User findById(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        User user = service.findByIdAndTreatHeaderValues(id, request, response);
         return user;
     }
 
